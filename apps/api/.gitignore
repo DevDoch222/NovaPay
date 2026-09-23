@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+
+# Build
+/dist
+/coverage
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+
+# Drizzle
+/drizzle/meta

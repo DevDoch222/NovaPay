@@ -1,0 +1,62 @@
+{
+  "name": "NovaPay",
+  "slug": "novapay",
+  "version": "0.0.1",
+  "orientation": "portrait",
+  "icon": "./assets/novapay.jpeg",
+  "scheme": "novapay",
+  "userInterfaceStyle": "light",
+  "newArchEnabled": true,
+  "splash": {
+    "image": "./assets/novapay.jpeg",
+    "resizeMode": "contain",
+    "backgroundColor": "#FFFFFF"
+  },
+  "ios": {
+    "supportsTablet": false,
+    "bundleIdentifier": "com.novapay.app",
+    "infoPlist": {
+      "NSFaceIDUsageDescription": "Allow NovaPay to use Face ID to unlock your account and confirm payments.",
+      "NSPhotoLibraryUsageDescription": "Allow NovaPay to access your photos for a profile picture.",
+      "NSCameraUsageDescription": "Allow NovaPay to use the camera for a profile picture."
+    }
+  },
+  "android": {
+    "adaptiveIcon": {
+      "foregroundImage": "./assets/novapay.jpeg",
+      "backgroundColor": "#FFFFFF"
+    },
+    "package": "com.novapay.app",
+    "permissions": [
+      "USE_BIOMETRIC",
+      "USE_FINGERPRINT",
+      "READ_MEDIA_IMAGES"
+    ]
+  },
+  "web": {
+    "bundler": "metro",
+    "output": "static",
+    "favicon": "./assets/novapay.jpeg"
+  },
+  "plugins": [
+    "expo-router",
+    "expo-font",
+    "expo-secure-store",
+    [
+      "expo-local-authentication",
+      {
+        "faceIDPermission": "Allow NovaPay to use Face ID to unlock your account and confirm payments."
+      }
+    ],
+    [
+      "expo-image-picker",
+      {
+        "photosPermission": "Allow NovaPay to access your photos for a profile picture.",
+        "cameraPermission": "Allow NovaPay to use the camera for a profile picture."
+      }
+    ]
+  ],
+  "experiments": {
+    "typedRoutes": true
+  }
+}

@@ -1,0 +1,62 @@
+name: NovaPay CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+defaults:
+  run:
+    working-directory: apps/api
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      PORT: 3000
+      APP_NAME: novapay-api
+      APP_URL: http://localhost:3000
+      # CI uses placeholder URLs; unit tests do not open a live DB connection.
+      DATABASE_URL: postgresql://novapay:novapay@localhost:5432/novapay?sslmode=disable
+      DATABASE_URL_DIRECT: postgresql://novapay:novapay@localhost:5432/novapay?sslmode=disable
+      REDIS_URL: redis://localhost:6379
+      JWT_ACCESS_SECRET: test-access-secret-min-32-characters!!
+      JWT_REFRESH_SECRET: test-refresh-secret-min-32-characters!
+      JWT_ACCESS_TTL: 15m
+      JWT_REFRESH_TTL: 30d
+      LOG_LEVEL: error
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/api/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test -- --passWithNoTests
+
+      - name: Build
+        run: npm run build

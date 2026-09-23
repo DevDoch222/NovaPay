@@ -1,0 +1,36 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - novapay_redis:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # Optional local Postgres if you are not using Supabase yet.
+  # Prefer Supabase for shared staging; use this for fully offline work.
+  postgres:
+    image: postgres:16-alpine
+    profiles: ["local-db"]
+    environment:
+      POSTGRES_USER: novapay
+      POSTGRES_PASSWORD: novapay
+      POSTGRES_DB: novapay
+    ports:
+      - "5432:5432"
+    volumes:
+      - novapay_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U novapay -d novapay"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  novapay_redis:
+  novapay_postgres:

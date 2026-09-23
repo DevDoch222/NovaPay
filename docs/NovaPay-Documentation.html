@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NovaPay — Project Documentation</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 20mm 16mm;
+  }
+
+  :root {
+    --ink: #0f172a;
+    --muted: #475569;
+    --line: #cbd5e1;
+    --accent: #0f766e;
+    --accent-soft: #ecfdf5;
+    --code-bg: #f1f5f9;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 10.5pt;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .cover {
+    page-break-after: always;
+    min-height: 240mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24mm 8mm;
+    border-left: 8px solid var(--accent);
+    padding-left: 18mm;
+  }
+
+  .cover .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-size: 9pt;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .cover h1 {
+    font-size: 42pt;
+    line-height: 1.05;
+    margin: 0 0 12px;
+    letter-spacing: -0.03em;
+  }
+
+  .cover .subtitle {
+    font-size: 14pt;
+    color: var(--muted);
+    max-width: 420px;
+    margin: 0 0 36px;
+  }
+
+  .cover .meta {
+    font-size: 10pt;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    max-width: 420px;
+  }
+
+  .cover .meta strong { color: var(--ink); }
+
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  h1.section {
+    font-size: 18pt;
+    margin: 0 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--ink);
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin: 22px 0 8px;
+    color: var(--accent);
+  }
+
+  h3 {
+    font-size: 11pt;
+    margin: 16px 0 6px;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 10px; }
+
+  ul, ol {
+    margin: 0 0 12px;
+    padding-left: 18px;
+  }
+
+  li { margin-bottom: 4px; }
+
+  .toc {
+    page-break-after: always;
+  }
+
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: toc;
+  }
+
+  .toc li {
+    counter-increment: toc;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--line);
+    padding: 8px 0;
+    margin: 0;
+  }
+
+  .toc li::before {
+    content: counter(toc, decimal-leading-zero) ". ";
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .toc .num { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 14px;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid var(--line);
+    padding: 7px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--accent-soft);
+    color: #065f46;
+    font-weight: 700;
+  }
+
+  code, .mono {
+    font-family: "SF Mono", "Consolas", "Liberation Mono", monospace;
+    font-size: 8.5pt;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 12px;
+    font-family: "SF Mono", "Consolas", "Liberation Mono", monospace;
+    font-size: 8pt;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0 0 14px;
+    page-break-inside: avoid;
+  }
+
+  .note {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 10px 12px;
+    margin: 0 0 14px;
+    font-size: 9.5pt;
+  }
+
+  .section-block {
+    page-break-before: always;
+  }
+
+  .section-block:first-of-type {
+    page-break-before: auto;
+  }
+
+  .footer-note {
+    margin-top: 28px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 8.5pt;
+    color: var(--muted);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .card-lite {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    page-break-inside: avoid;
+  }
+
+  .card-lite h3 { margin-top: 0; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="eyebrow">Technical Documentation</div>
+  <h1>NovaPay</h1>
+  <p class="subtitle">Cross-border multi-currency digital banking platform for Africa-connected users, freelancers, diaspora senders, and businesses.</p>
+  <div class="meta">
+    <div><strong>Version:</strong> 1.0</div>
+    <div><strong>Date:</strong> 14 July 2026</div>
+    <div><strong>Scope:</strong> Monorepo — NestJS API &amp; Expo mobile app (Phases 0–4 / F0–F7)</div>
+    <div><strong>Classification:</strong> Internal project documentation</div>
+  </div>
+</section>
+
+<!-- TOC -->
+<section class="toc">
+  <h1 class="section">Contents</h1>
+  <ol>
+    <li><span>Introduction &amp; Product Overview</span></li>
+    <li><span>Repository Structure</span></li>
+    <li><span>Technology Stack</span></li>
+    <li><span>Core Features &amp; User Flows</span></li>
+    <li><span>API Architecture</span></li>
+    <li><span>Database Schema</span></li>
+    <li><span>Mobile Application</span></li>
+    <li><span>Configuration &amp; Environment</span></li>
+    <li><span>Local Development Setup</span></li>
+    <li><span>Phased Delivery Roadmap</span></li>
+    <li><span>Security &amp; Compliance Notes</span></li>
+  </ol>
+</section>
+
+<!-- 1 -->
+<section class="section-block">
+  <h1 class="section">1. Introduction &amp; Product Overview</h1>
+
+  <p><strong>NovaPay</strong> is a cross-border, multi-currency digital banking platform built for Africa-connected users. It connects local African financial rails (bank transfers, mobile money) with global currencies so people and businesses can hold, convert, send, receive, and spend money with transparent FX.</p>
+
+  <h2>1.1 Purpose</h2>
+  <ul>
+    <li>Hold balances in <strong>NGN</strong>, <strong>USD</strong>, and <strong>EUR</strong></li>
+    <li>Convert currencies with locked, transparent FX quotes</li>
+    <li>Fund wallets and pay out to bank or mobile-money beneficiaries</li>
+    <li>Issue virtual USD cards for online spend</li>
+    <li>Receive inbound ACH/SEPA credits via virtual accounts</li>
+    <li>Pay utility bills and buy airtime</li>
+    <li>Deposit stablecoins and convert 1:1 to/from USD</li>
+    <li>Operate business workspaces with roles and bulk payout approvals</li>
+  </ul>
+
+  <h2>1.2 Target Users</h2>
+  <table>
+    <thead>
+      <tr><th>Segment</th><th>Needs</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Individuals &amp; freelancers</td>
+        <td>Receive USD/EUR from global clients, convert to NGN, spend on virtual cards</td>
+      </tr>
+      <tr>
+        <td>Diaspora senders</td>
+        <td>Move money from UK/EU/US to Africa with clear rates and payout rails</td>
+      </tr>
+      <tr>
+        <td>Businesses &amp; organizations</td>
+        <td>Multi-currency ops, team roles, dual-authorization bulk payouts, public API</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 2 -->
+<section class="section-block">
+  <h1 class="section">2. Repository Structure</h1>
+  <p>NovaPay is a monorepo containing the backend API, the Expo mobile client, and phase documentation.</p>
+  <pre>NovaPay/
+├── apps/
+│   ├── api/                 NestJS modular monolith (backend)
+│   └── mobile/              Expo + React Native (frontend)
+├── docs/
+│   ├── phase-0/ … phase-4/  Backend phase specifications
+│   └── frontend/            Mobile phase specifications (F0–F7)
+├── docker-compose.yml       Local infrastructure (Redis)
+├── .env.example             Environment template
+└── README.md                Repository overview</pre>
+</section>
+
+<!-- 3 -->
+<section class="section-block">
+  <h1 class="section">3. Technology Stack</h1>
+
+  <h2>3.1 Backend (<span class="mono">apps/api</span>)</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Choice</th></tr></thead>
+    <tbody>
+      <tr><td>Framework</td><td>NestJS (TypeScript), modular monolith</td></tr>
+      <tr><td>ORM</td><td>Drizzle ORM</td></tr>
+      <tr><td>Database</td><td>PostgreSQL (Supabase hosting)</td></tr>
+      <tr><td>Cache / locks</td><td>Redis (<span class="mono">ioredis</span>)</td></tr>
+      <tr><td>Auth</td><td>Passport JWT (access + refresh tokens)</td></tr>
+      <tr><td>Validation</td><td>Zod (env), class-validator (DTOs)</td></tr>
+      <tr><td>Logging</td><td>Pino / nestjs-pino</td></tr>
+      <tr><td>Health</td><td>@nestjs/terminus</td></tr>
+      <tr><td>Cloud target</td><td>AWS (events via SNS/SQS or Kafka in later wiring)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3.2 Mobile (<span class="mono">apps/mobile</span>)</h2>
+  <table>
+    <thead><tr><th>Layer</th><th>Choice</th></tr></thead>
+    <tbody>
+      <tr><td>Framework</td><td>Expo SDK 54 + React Native + TypeScript</td></tr>
+      <tr><td>Routing</td><td>Expo Router (file-based, auth / tabs / modals)</td></tr>
+      <tr><td>Typography</td><td>Plus Jakarta Sans (UI), DM Sans (money/numbers)</td></tr>
+      <tr><td>Secure storage</td><td>expo-secure-store</td></tr>
+      <tr><td>Biometrics</td><td>expo-local-authentication</td></tr>
+      <tr><td>Motion</td><td>react-native-reanimated, gesture-handler</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 4 -->
+<section class="section-block">
+  <h1 class="section">4. Core Features &amp; User Flows</h1>
+
+  <h2>4.1 Authentication &amp; Onboarding</h2>
+  <ol>
+    <li>Welcome carousel introduces the product value propositions.</li>
+    <li>User enters phone number in E.164 format.</li>
+    <li>SMS OTP is issued (Redis-backed). Sandbox supports fixed code <span class="mono">000000</span>.</li>
+    <li>User sets a 4-digit PIN for unlock and transaction authorization.</li>
+    <li>Optional biometric opt-in (Face ID / Touch ID).</li>
+  </ol>
+
+  <h2>4.2 KYC</h2>
+  <p>Users submit identity documents (e.g. NIN, BVN, Passport). Sandbox can auto-approve submissions, moving users from <span class="mono">tier_0</span> (restricted) to <span class="mono">tier_1</span> (active). Payouts and card issuance require <span class="mono">tier_1+</span>; <span class="mono">tier_0</span> single-payout limit is 0.</p>
+
+  <h2>4.3 Wallets &amp; Double-Entry Ledger</h2>
+  <p>Multi-currency wallets (NGN, USD, EUR). Every financial movement posts balanced debit/credit rows in <span class="mono">ledger_entries</span>. Wallet balance is the sum of ledger entries for that wallet. Amounts are stored as <span class="mono">bigint</span> minor units (kobo/cents).</p>
+
+  <h2>4.4 Funding</h2>
+  <ol>
+    <li>User selects Add Money on the NGN wallet and enters an amount.</li>
+    <li>Payment rail: Flutterwave (live NGN rails) or mock/sandbox.</li>
+    <li>Sandbox: <span class="mono">simulate-complete</span> credits the ledger immediately.</li>
+  </ol>
+
+  <h2>4.5 FX Conversion</h2>
+  <ol>
+    <li>User requests a quote (e.g. NGN ↔ USD).</li>
+    <li>Rate = mid-market + configurable margin (basis points).</li>
+    <li>Quote locks for 60 seconds (TTL countdown in the app).</li>
+    <li>Booking executes a double-entry transfer between wallets.</li>
+  </ol>
+
+  <h2>4.6 Send &amp; Payouts</h2>
+  <p>Beneficiaries may be bank accounts or mobile money (MTN, Airtel, M-Pesa, etc.). Payouts require PIN authorization and are processed via Flutterwave or mock rails.</p>
+
+  <h2>4.7 Virtual USD Cards</h2>
+  <ul>
+    <li>Issue virtual Visa/Mastercard on the USD wallet.</li>
+    <li>Full PANs are never stored — only <span class="mono">last4</span>, expiry, and processor references.</li>
+    <li>Controls: freeze, unfreeze, close.</li>
+    <li>Sandbox can simulate authorize → settle against the USD ledger.</li>
+  </ul>
+
+  <h2>4.8 Receive, Bills &amp; Airtime</h2>
+  <ul>
+    <li>Virtual USD/EUR receiving accounts (routing, IBAN, BIC, bank name).</li>
+    <li>Simulate inbound ACH/SEPA credits in sandbox.</li>
+    <li>Biller catalogs and airtime operators by country, paid with PIN gate.</li>
+  </ul>
+
+  <h2>4.9 Stablecoins &amp; Business</h2>
+  <ul>
+    <li>Deposit USDC/USDT; convert 1:1 to/from fiat USD.</li>
+    <li>Organizations with roles: owner, admin, approver, member.</li>
+    <li>Bulk payout batches with dual authorization above approval limits.</li>
+    <li>Developer API keys (<span class="mono">np_test_...</span>) and webhook registration.</li>
+  </ul>
+</section>
+
+<!-- 5 -->
+<section class="section-block">
+  <h1 class="section">5. API Architecture</h1>
+  <p>The API is a NestJS modular monolith. Routes are versioned under <span class="mono">/v1</span> and secured with JWT unless marked <span class="mono">@Public()</span>.</p>
+
+  <h2>5.1 Auth &amp; Profile</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>POST</td><td><span class="mono">/v1/auth/otp/request</span></td><td>Public — request OTP</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/auth/otp/verify</span></td><td>Public — verify OTP, return JWTs</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/auth/token/refresh</span></td><td>Public — refresh access token</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/auth/me</span></td><td>Session hydrate (profile + KYC)</td></tr>
+      <tr><td>PATCH</td><td><span class="mono">/v1/auth/profile</span></td><td>Update profile</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/auth/kyc</span></td><td>Submit KYC documents</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.2 Wallets, Payments &amp; Transactions</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td><span class="mono">/v1/wallets</span></td><td>List wallets &amp; balances</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/payments/rail</span></td><td>Active rail (mock / flutterwave)</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/payments/banks/ng</span></td><td>Nigerian bank list</td></tr>
+      <tr><td>GET/POST</td><td><span class="mono">/v1/beneficiaries</span></td><td>List / add beneficiaries</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/payments/fund</span></td><td>Start wallet funding</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/payments/fund/:id/simulate-complete</span></td><td>Sandbox credit</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/payments/payout</span></td><td>Payout to beneficiary</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/transactions</span></td><td>Paginated history</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/transactions/:id</span></td><td>Transaction detail</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/payments/flutterwave/webhook</span></td><td>Public webhook</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.3 FX</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td><span class="mono">/v1/fx/rate</span></td><td>Live rates</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/fx/quotes</span></td><td>Create locked quote</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/fx/quotes/:id/book</span></td><td>Book quote / convert</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.4 Cards</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/cards</span></td><td>Issue / list cards</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/cards/:id/freeze|unfreeze|close</span></td><td>Card controls</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/cards/:id/authorize</span></td><td>Sandbox auth hold</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/cards/authorizations/:authId/settle</span></td><td>Settle auth</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.5 Receive, Bills, Stablecoins</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/accounts/virtual</span></td><td>Create / list virtual accounts</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/accounts/virtual/:id/simulate-inbound</span></td><td>Sandbox inbound</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/bills/catalog</span></td><td>Billers by country</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/airtime/operators</span></td><td>Operators by country</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/bills/pay</span></td><td>Pay bill</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/airtime/topup</span></td><td>Airtime top-up</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/stablecoins/balances</span></td><td>Stablecoin balances</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/stablecoins/deposit|convert</span></td><td>Deposit / convert</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.6 Business &amp; Public API</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Endpoint</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/business/organizations</span></td><td>Create / list orgs</td></tr>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/business/organizations/:orgId/members</span></td><td>Invite / list members</td></tr>
+      <tr><td>GET/POST</td><td><span class="mono">/v1/business/organizations/:orgId/wallet[…]</span></td><td>Org wallet &amp; fund</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/business/.../bulk-payouts[…]</span></td><td>Submit / approve batches</td></tr>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/developer/api-keys</span></td><td>Create / list keys</td></tr>
+      <tr><td>POST</td><td><span class="mono">/v1/developer/api-keys/:id/revoke</span></td><td>Revoke key</td></tr>
+      <tr><td>POST/GET</td><td><span class="mono">/v1/developer/webhooks</span></td><td>Register / list webhooks</td></tr>
+      <tr><td>GET</td><td><span class="mono">/v1/public/wallets|transactions</span></td><td>API-key gated public read</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5.7 Health</h2>
+  <ul>
+    <li><span class="mono">GET /health</span> — Postgres, Redis, and app checks (public)</li>
+    <li><span class="mono">GET /health/live</span> — Liveness probe (public)</li>
+  </ul>
+</section>
+
+<!-- 6 -->
+<section class="section-block">
+  <h1 class="section">6. Database Schema</h1>
+  <p>PostgreSQL via Drizzle ORM. Monetary fields use <span class="mono">bigint</span> minor units to avoid floating-point error.</p>
+
+  <h2>6.1 Important Enums</h2>
+  <table>
+    <thead><tr><th>Enum</th><th>Values (summary)</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">user_status</span></td><td>pending, active, suspended, closed</td></tr>
+      <tr><td><span class="mono">wallet_owner_type</span></td><td>user, system, organization</td></tr>
+      <tr><td><span class="mono">wallet_status</span></td><td>active, frozen, closed</td></tr>
+      <tr><td><span class="mono">ledger_direction</span></td><td>debit, credit</td></tr>
+      <tr><td><span class="mono">transaction_type</span></td><td>fund, payout, transfer, convert, card_spend, receive, bill, airtime, stablecoin_*, bulk_payout, reversal, adjustment</td></tr>
+      <tr><td><span class="mono">transaction_status</span></td><td>pending, processing, completed, failed, reversed</td></tr>
+      <tr><td><span class="mono">beneficiary_type</span></td><td>bank, mobile_money</td></tr>
+      <tr><td><span class="mono">kyc_status</span></td><td>pending, approved, rejected</td></tr>
+      <tr><td><span class="mono">card_status</span></td><td>active, frozen, closed</td></tr>
+      <tr><td><span class="mono">fx_quote_status</span></td><td>open, booked, expired</td></tr>
+      <tr><td><span class="mono">org_role</span></td><td>owner, admin, approver, member</td></tr>
+      <tr><td><span class="mono">bulk_payout_status</span></td><td>draft, pending_approval, processing, completed, failed, rejected</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6.2 Core Tables</h2>
+  <table>
+    <thead><tr><th>Table</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">users</span></td><td>Phone, email, tag, status, KYC tier</td></tr>
+      <tr><td><span class="mono">wallets</span></td><td>Per-owner, per-currency fiat wallets</td></tr>
+      <tr><td><span class="mono">transactions</span></td><td>High-level money movement records + idempotency</td></tr>
+      <tr><td><span class="mono">ledger_entries</span></td><td>Double-entry rows; balance = sum by wallet</td></tr>
+      <tr><td><span class="mono">beneficiaries</span></td><td>Saved bank / MoMo recipients</td></tr>
+      <tr><td><span class="mono">kyc_records</span></td><td>Document verification trail</td></tr>
+      <tr><td><span class="mono">fx_quotes</span></td><td>Locked quotes with mid/client rate &amp; TTL</td></tr>
+      <tr><td><span class="mono">cards</span></td><td>Virtual/physical cards (no full PAN)</td></tr>
+      <tr><td><span class="mono">virtual_accounts</span></td><td>Inbound receive account details</td></tr>
+      <tr><td><span class="mono">organizations</span></td><td>Business profiles + approval limits</td></tr>
+      <tr><td><span class="mono">organization_members</span></td><td>User ↔ org role mapping</td></tr>
+      <tr><td><span class="mono">bulk_payout_batches / items</span></td><td>Org payout batches and line items</td></tr>
+      <tr><td><span class="mono">api_keys</span></td><td>Hashed developer keys + scopes</td></tr>
+      <tr><td><span class="mono">webhook_endpoints</span></td><td>Developer webhook subscriptions</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Ledger invariant:</strong> every completed financial action must produce balanced debit and credit ledger entries. The wallet balance is derived from the ledger, not stored as a mutable single column.
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="section-block">
+  <h1 class="section">7. Mobile Application</h1>
+  <p>File-based routing lives under <span class="mono">apps/mobile/app</span>.</p>
+
+  <h2>7.1 Auth &amp; Onboarding Routes</h2>
+  <table>
+    <thead><tr><th>Screen</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">(auth)/welcome</span></td><td>Onboarding carousel</td></tr>
+      <tr><td><span class="mono">(auth)/phone</span></td><td>E.164 phone input</td></tr>
+      <tr><td><span class="mono">(auth)/otp</span></td><td>OTP verification</td></tr>
+      <tr><td><span class="mono">(auth)/pin-setup</span></td><td>Set 4-digit PIN</td></tr>
+      <tr><td><span class="mono">(auth)/pin-unlock</span></td><td>Cold-start unlock gate</td></tr>
+      <tr><td><span class="mono">(auth)/kyc</span></td><td>Document submission</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7.2 Main Tabs</h2>
+  <table>
+    <thead><tr><th>Tab</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Home</td><td>Wallet balances, currency toggle, quick actions, recent activity</td></tr>
+      <tr><td>Cards</td><td>Virtual cards list + USD balance</td></tr>
+      <tr><td>Send</td><td>Beneficiaries and send entry points</td></tr>
+      <tr><td>Activity</td><td>Full transaction history with filters</td></tr>
+      <tr><td>Profile</td><td>Profile, KYC tier, money tools links</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7.3 Action Modals / Screens</h2>
+  <p>Fund, Convert, Add Beneficiary, Send Money, Create Card, Card Details, Bills, Receive, Stablecoins, Business workspace, Business org detail, Edit Profile, Change PIN.</p>
+</section>
+
+<!-- 8 -->
+<section class="section-block">
+  <h1 class="section">8. Configuration &amp; Environment</h1>
+
+  <h2>8.1 API (<span class="mono">apps/api/.env</span>)</h2>
+  <pre>NODE_ENV=development
+PORT=3000
+APP_NAME=novapay-api
+APP_URL=http://localhost:3000
+
+# Supabase Postgres
+# Transaction pooler (6543) for runtime
+DATABASE_URL=postgresql://...@...pooler.supabase.com:6543/postgres?sslmode=require
+# Direct / session (5432) for migrations
+DATABASE_URL_DIRECT=postgresql://...@...:5432/postgres?sslmode=require
+
+REDIS_URL=redis://localhost:6379
+
+JWT_ACCESS_SECRET=...   # ≥ 32 chars
+JWT_REFRESH_SECRET=...  # ≥ 32 chars
+JWT_ACCESS_TTL=15m
+JWT_REFRESH_TTL=30d
+
+LOG_LEVEL=info
+OTP_DEV_FIXED_CODE=000000
+KYC_AUTO_APPROVE=true
+
+PAYMENT_RAIL=auto
+FLW_PUBLIC_KEY=...
+FLW_SECRET_KEY=...
+FLW_ENCRYPTION_KEY=...
+FLW_WEBHOOK_HASH=...
+FLW_BASE_URL=https://api.flutterwave.com/v3
+
+FX_USD_NGN_MID=1600
+FX_USD_EUR_MID=0.92
+FX_MARGIN_BPS=150
+FX_QUOTE_TTL_SECONDS=60
+CARD_ISSUER=mock</pre>
+
+  <h2>8.2 Mobile</h2>
+  <p>Set <span class="mono">EXPO_PUBLIC_API_URL</span> to the API base URL.</p>
+  <div class="note">
+    Physical devices cannot use <span class="mono">localhost</span> — use your machine’s LAN IP, e.g. <span class="mono">http://192.168.x.x:3000</span>.
+  </div>
+
+  <h2>8.3 Supabase Notes</h2>
+  <ul>
+    <li>Runtime uses the transaction pooler URL (port 6543).</li>
+    <li>Drizzle migrations use the direct/session URL (port 5432).</li>
+    <li>SSL (<span class="mono">sslmode=require</span>) is required.</li>
+    <li>Supabase is used as Postgres hosting only; auth/KYC remain in NestJS.</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section class="section-block">
+  <h1 class="section">9. Local Development Setup</h1>
+
+  <h2>9.1 Infrastructure</h2>
+  <pre>docker compose up -d redis</pre>
+
+  <h2>9.2 API</h2>
+  <pre>cd apps/api
+npm install
+cp ../../.env.example .env   # then fill Supabase + secrets
+npm run db:push
+npm run start:dev
+# Health: http://localhost:3000/health</pre>
+
+  <h2>9.3 Mobile</h2>
+  <pre>cd apps/mobile
+npm install
+
+# Simulator
+EXPO_PUBLIC_API_URL=http://localhost:3000 npx expo start
+
+# Physical device (use LAN IP)
+EXPO_PUBLIC_API_URL=http://192.168.1.50:3000 npx expo start --offline</pre>
+
+  <p>Open with iOS/Android simulator, or scan the QR code in Expo Go.</p>
+</section>
+
+<!-- 10 -->
+<section class="section-block">
+  <h1 class="section">10. Phased Delivery Roadmap</h1>
+
+  <h2>10.1 Backend Phases</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Scaffold NestJS, Supabase Postgres, Redis; partners &amp; regulatory notes</td></tr>
+      <tr><td>1</td><td>OTP auth, KYC, NGN double-entry ledger, fund &amp; payout (mock/Flutterwave)</td></tr>
+      <tr><td>2</td><td>FX quotes, NGN ↔ USD conversion, virtual USD cards</td></tr>
+      <tr><td>3</td><td>Virtual receive accounts, MoMo payouts, bills &amp; airtime sandbox</td></tr>
+      <tr><td>4</td><td>Organizations, bulk payouts, stablecoins, public API keys &amp; webhooks</td></tr>
+    </tbody>
+  </table>
+
+  <h2>10.2 Frontend Phases</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>Focus</th></tr></thead>
+    <tbody>
+      <tr><td>F0</td><td>Design system, typography, tab shell</td></tr>
+      <tr><td>F1</td><td>Welcome, OTP, PIN lock, KYC</td></tr>
+      <tr><td>F2</td><td>Home wallets, fund modal, activity</td></tr>
+      <tr><td>F3</td><td>FX convert + send / beneficiaries</td></tr>
+      <tr><td>F4</td><td>Virtual cards + controls + simulated spend</td></tr>
+      <tr><td>F5</td><td>Bills, airtime, receive accounts</td></tr>
+      <tr><td>F6</td><td>Stablecoin deposit &amp; convert</td></tr>
+      <tr><td>F7</td><td>Business orgs, invites, bulk payout approvals</td></tr>
+    </tbody>
+  </table>
+
+  <p>Detailed specifications live in <span class="mono">docs/phase-*</span> and <span class="mono">docs/frontend/phase-f*</span>.</p>
+</section>
+
+<!-- 11 -->
+<section class="section-block">
+  <h1 class="section">11. Security &amp; Compliance Notes</h1>
+  <ul>
+    <li>JWT access tokens are short-lived; refresh tokens rotate over a longer TTL.</li>
+    <li>Session material and PIN unlock are protected on-device via SecureStore and optional biometrics.</li>
+    <li>Card PANs are not persisted in the application database.</li>
+    <li>API keys are stored hashed; only prefixes are returned after creation.</li>
+    <li>Payment and BaaS webhooks are public endpoints and must validate provider signatures/hashes.</li>
+    <li>KYC tiers gate high-risk actions (payouts, card issuance).</li>
+    <li>Idempotency keys on critical money-moving endpoints prevent duplicate posts.</li>
+    <li>Regulatory pathways, custody models, and partner shortlists are documented under <span class="mono">docs/phase-0/</span> (<span class="mono">REGULATORY.md</span>, <span class="mono">PARTNERS.md</span>).</li>
+  </ul>
+
+  <div class="footer-note">
+    NovaPay Project Documentation v1.0 · Generated 14 July 2026 · Source of truth: repository at <span class="mono">apps/</span> and <span class="mono">docs/</span>.
+    This document summarizes the implemented monorepo for onboarding, architecture review, and delivery tracking.
+  </div>
+</section>
+
+</body>
+</html>
